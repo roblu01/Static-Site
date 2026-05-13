@@ -1,4 +1,5 @@
 from textnode import*
+from enum import Enum
 import re
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -99,4 +100,86 @@ def text_to_textnodes(text):
 
     return splitted_all
 
+def markdown_to_blocks(markdown):
+    separated = markdown.split('\n\n')
+    clean_list = []
+    for piece in separated:
+        cleaned = piece.strip()
+        if cleaned !='':
+            clean_list.append(cleaned)
+    return clean_list
+
+class BlockType(Enum):
+    PARAGRAPH = "paragraph"
+    HEADING = "heading"
+    CODE = "code"
+    QUOTE = "quote"
+    UNORDERED_LIST = "unordered_list"
+    ORDERED_LIST = "ordered_list"
+
+def block_to_block_type(block):
+    splitted = block.split("\n")
+
+    if block.startswith(("# ","## ","### ","#### ","##### ","###### ")):
+        return BlockType.HEADING
+    
+    if block.startswith("```\n") and block.endswith("```"):
+        return BlockType.CODE
+    
+    if block.startswith(">"):
+        for splitt in splitted:
+            if not splitt.startswith(">"):
+                return BlockType.PARAGRAPH
+        return BlockType.QUOTE
+    
+    if block.startswith("- "):
+        for splitt in splitted:
+            if not splitt.startswith("- "):
+                return BlockType.PARAGRAPH
+        return BlockType.UNORDERED_LIST
+    
+    if block.startswith("1. "):
+        for i in range(len(splitted)):
+            splitt = splitted[i]
+            if not splitt.startswith(f"{i+1}. "):
+                return BlockType.PARAGRAPH
+        return BlockType.ORDERED_LIST
+
+    else:
+        return BlockType.PARAGRAPH
+    
+    '''
+    # I did not made an initial check if the block started correctly
+    ok_quote = []
+    for splitt in splitted:
+        if not splitt.startswith(">"):
+            return BlockType.PARAGRAPH
+        if splitt.startswith(">") or splitt.startswith("> "):
+            ok_quote.append('yes')
+    if len(set(ok_quote)) <=1:
+        return BlockType.QUOTE
+
+    #ordered tweaked. it works but became convoluted when not using an initial check that would let me return early if something is amiss.
+    ok_ordered = []
+    for i in range(len(splitted)):
+        splitt = splitted[i]
+        if not splitt.startswith(f"{i+1}. "):
+            return BlockType.PARAGRAPH
+        if splitt.startswith(f"{i+1}. "):
+            ok_ordered.append('yes')
+    if len(set(ok_ordered)) <=1:
+        return BlockType.ORDERED_LIST
+
+    #ordered first try
+    ok_ordered = []
+    for i in range(len(splitted)):
+        splitt = splitted[i]
+        if splitt.startswith(f"{i+1}. "):
+            if splitt[0] != f'{i+1}':
+                return BlockType.PARAGRAPH
+            ok_ordered.append('yes')
+    if len(set(ok_ordered)) <=1:
+        return BlockType.ORDERED_LIST
+    '''
+        
 

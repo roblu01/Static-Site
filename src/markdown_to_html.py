@@ -92,6 +92,7 @@ def code_to_HTMLNode(block):
 
 
 '''
+##-------------------------------------- too many nested if's
 
 def block_type_to_HTMLNode(block_type):
     if block_type == BlockType.HEADING:

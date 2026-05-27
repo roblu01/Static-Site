@@ -4,7 +4,7 @@ from generate_page import generate_pages_recursive
 import sys
 
 def main():
-    basepath = sys.argv
+    basepath = sys.argv[1]
     if not basepath:
         basepath = '/'
 

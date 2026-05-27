@@ -4,8 +4,9 @@ from generate_page import generate_pages_recursive
 import sys
 
 def main():
-    basepath = sys.argv[1]
-    if not basepath:
+    if len(sys.argv)>1:
+        basepath = sys.argv[1]
+    else:
         basepath = '/'
 
     copy_static_to_public()

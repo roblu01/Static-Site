@@ -2,7 +2,7 @@ import os
 import shutil
 
 def copy_static_to_public():
-    target = 'public'
+    target = 'docs'
     source = 'static'
     if os.path.exists(target):
         shutil.rmtree(target)

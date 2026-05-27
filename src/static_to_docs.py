@@ -1,7 +1,7 @@
 import os
 import shutil
 
-def copy_static_to_public():
+def copy_static_to_docs():
     target = 'docs'
     source = 'static'
     if os.path.exists(target):

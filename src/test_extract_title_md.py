@@ -1,5 +1,5 @@
 import unittest
-from static_to_public import extract_title
+from static_to_docs import extract_title
 
 class TestDelimiter(unittest.TestCase):
     def test_extract_title(self):
